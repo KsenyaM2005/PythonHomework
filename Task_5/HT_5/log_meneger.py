@@ -15,6 +15,9 @@ class LogLevel(Enum):
     ERROR = 40
     FATAL = 50
 
+    def __str__(self):
+        return self.name
+
 
 
 class LogManager:
