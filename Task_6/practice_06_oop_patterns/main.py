@@ -16,7 +16,7 @@ if __name__ == "__main__":
     img_analysis = MonochromeImage()
 
     img_filtered = img_analysis.noise_filtering(img)
-    img_segmented = img_analysis.segmentation(img)
+    img_segmented, _ = img_analysis.segmentation(img)
 
     write_data("data/mono_filtered.png", img_filtered)
     write_data("data/mono_segmented.png", img_segmented)
