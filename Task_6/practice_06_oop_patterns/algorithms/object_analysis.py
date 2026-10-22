@@ -60,13 +60,20 @@ class MonochromeImage(BinaryImage):
 
     def noise_filtering(self, image):
         # фильтр Гаусса
-        kernel = np.ones((5, 5), np.float32) / 25
-        dst = cv2.filter2D(image, -1, kernel)
+        dst = cv2.GaussianBlur(image, (5, 5), 0)
         return dst
 
     def segmentation(self, image):
+        # границы
         edges = cv2.Canny(image,100,200)
-        return edges
+        # разметка связных компонент
+        num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(
+            edges,
+            4,
+            cv2.CV_32S
+        )
+        output = (num_labels, labels, stats, centroids)
+        return edges, output
 
 class ColorImage(MonochromeImage):
     def __init__(self):
