@@ -5,6 +5,16 @@ import numpy as np
 Абстрактная фабрика 
 """
 
+
+from enum import Enum
+
+class ImgType(Enum):
+    BIN = 0
+    MONO = 1
+    COLOR = 3
+
+
+
 class AbstractFactoryImageReader():
     def read_image(self, file_path):
         raise NotImplementedError()
@@ -26,15 +36,20 @@ class MonochromeImageReader(AbstractFactoryImageReader):
 
 class ColorImageReader(AbstractFactoryImageReader):
     def read_image(self, file_path):
-        raise NotImplementedError()
+        image = cv2.imread(file_path, cv2.IMREAD_COLOR)
+        return image
+
+
 
 def get_image_reader(ident):
-    if ident == 0:
+    if ident == 0 or ident == ImgType.BIN:
         return BinImageReader()
-    elif ident == 1:
+    elif ident == 1 or ident == ImgType.MONO:
         return MonochromeImageReader()
-    elif ident == 2:
+    elif ident == 2 or ident == ImgType.COLOR:
         return ColorImageReader()
+
+
 
 if __name__ == "__main__":
     try:

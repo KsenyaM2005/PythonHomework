@@ -27,8 +27,21 @@ class Hist:
         return cls(data)
 
     @classmethod
-    def write(cls, filename):
-        pass
+    def write(cls, data, filename):
+        ext = filename.rsplit('.', 1)[-1]
+        if ext == 'bin':
+            encoder = encoders.encoder.BinHistEncoder
+        elif ext == 'txt':
+            encoder = encoders.encoder.TxtHistEncoder
+        elif ext == 'json':
+            encoder = encoders.encoder.JsonHistEncoder
+        elif ext == 'csv':
+            encoder = encoders.encoder.CsvHistEncoder
+        elif ext in ('png', 'jpg', 'jpeg', 'bmp'):
+            encoder = encoders.encoder.ImageHistEncoder
+        else:
+            raise RuntimeError('Невозможно получить данные %s' % filename)
+        encoder.encode(data, filename)
 
     def __init__(self, data):
         self._data = data
